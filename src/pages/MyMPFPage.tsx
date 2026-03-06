@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FileText, User, Bell, Home } from 'lucide-react';
+import { useTransfer } from '../context/TransferContext';
 
 interface MenuItem {
   id: string;
@@ -12,6 +13,7 @@ interface MenuItem {
 const MyMPFPage = () => {
   const [activeTab, setActiveTab] = useState('my-mpf');
   const navigate = useNavigate();
+  const { resetTransferData } = useTransfer();
 
   const menuItems: MenuItem[] = [
     {
@@ -59,6 +61,19 @@ const MyMPFPage = () => {
     { id: 'profile', icon: <User size={24} />, label: '個人檔案' },
   ];
 
+  const handleInvestClick = () => {
+    // 重置所有轉換數據
+    resetTransferData();
+    navigate('/invest');
+  };
+
+  const handleTabClick = (tabId: string) => {
+    setActiveTab(tabId);
+    if (tabId === 'overview') {
+      navigate('/overview');
+    }
+  };
+
   return (
     <div className="mpf-page">
       {/* Page Title */}
@@ -72,7 +87,7 @@ const MyMPFPage = () => {
             className="menu-card"
             onClick={() => {
               if (item.title === '投資') {
-                navigate('/invest');
+                handleInvestClick();
               }
             }}
             style={{ cursor: item.title === '投資' ? 'pointer' : 'default' }}
@@ -98,7 +113,7 @@ const MyMPFPage = () => {
           <button
             key={tab.id}
             className={`bottom-tab ${activeTab === tab.id ? 'active' : ''}`}
-            onClick={() => setActiveTab(tab.id)}
+            onClick={() => handleTabClick(tab.id)}
           >
             <span className="tab-icon">{tab.icon}</span>
             <span className="tab-label">{tab.label}</span>

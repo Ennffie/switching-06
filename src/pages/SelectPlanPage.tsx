@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, Check } from 'lucide-react';
+import { useTransfer } from '../context/TransferContext';
 
 interface Plan {
   id: string;
@@ -9,13 +10,21 @@ interface Plan {
   date: string;
   accountNumber: string;
   accountType: string;
-  balance: string;
+  balance: number;
   icon: string;
 }
 
 const SelectPlanPage = () => {
   const navigate = useNavigate();
-  const [selectedPlan, setSelectedPlan] = useState<string>('aia'); // 預設選中友邦
+  const { transferData, setStep1Data } = useTransfer();
+  
+  // 從 Context 讀取已選擇嘅計劃
+  const [selectedPlan, setSelectedPlan] = useState<string>(() => {
+    // 如果 Context 有資料，返返對應嘅 plan id
+    if (transferData.step1?.planName.includes('友邦')) return 'aia';
+    if (transferData.step1?.planName.includes('宏利')) return 'manulife';
+    return 'aia'; // 預設
+  });
 
   const plans: Plan[] = [
     {
@@ -23,9 +32,9 @@ const SelectPlanPage = () => {
       name: '友邦強積金優選計劃',
       subtitle: '自 15/03/2015 | 成員帳戶號碼：38765432',
       date: '15/03/2015',
-      accountNumber: '38765432',
-      accountType: '個人帳戶',
-      balance: '$ 89,234.50',
+      accountNumber: '56442131',
+      accountType: '一般僱員',
+      balance: 122309.07,
       icon: './icons/aia-logo-new.jpg',
     },
     {
@@ -35,7 +44,7 @@ const SelectPlanPage = () => {
       date: '26/01/2011',
       accountNumber: '29819644',
       accountType: '個人帳戶',
-      balance: '$ 135,050.05',
+      balance: 135050.05,
       icon: './icons/manulife-logo-new.jpg',
     },
   ];
@@ -43,6 +52,19 @@ const SelectPlanPage = () => {
   const handlePlanClick = (planId: string) => {
     if (planId === 'aia') {
       setSelectedPlan(planId);
+      // 儲存到 Context
+      const selectedPlanData = plans.find(p => p.id === planId);
+      if (selectedPlanData) {
+        setStep1Data({
+          planName: selectedPlanData.name,
+          trustee: '友邦(信託)有限',
+          accountNumber: selectedPlanData.accountNumber,
+          accountType: selectedPlanData.accountType,
+          balance: selectedPlanData.balance,
+          employerName: 'Taxable VC (Not Applicable)',
+          icon: selectedPlanData.icon,
+        });
+      }
     }
     // 宏利按下無反應（不能選擇）
   };
@@ -51,6 +73,10 @@ const SelectPlanPage = () => {
     if (selectedPlan) {
       navigate('/invest/fund-transfer');
     }
+  };
+
+  const formatBalance = (balance: number) => {
+    return `$ ${balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   };
 
   return (
@@ -79,20 +105,16 @@ const SelectPlanPage = () => {
               </div>
             </div>
             
-            {/* Line */}
             <div className="w-12 h-0.5 bg-gray-300 mx-1" />
             
-            {/* Step 2 */}
             <div className="flex items-center">
               <div className="w-7 h-7 rounded-full bg-gray-300 flex items-center justify-center">
                 <span className="text-gray-500 text-sm">2</span>
               </div>
             </div>
             
-            {/* Line */}
             <div className="w-12 h-0.5 bg-gray-300 mx-1" />
             
-            {/* Step 3 */}
             <div className="flex items-center">
               <div className="w-7 h-7 rounded-full bg-gray-300 flex items-center justify-center">
                 <span className="text-gray-500 text-sm">3</span>
@@ -119,7 +141,7 @@ const SelectPlanPage = () => {
         <div className="space-y-4">
           {plans.map((plan) => {
             const isSelected = selectedPlan === plan.id;
-            const isClickable = plan.id === 'aia'; // 只有友邦可以點擊
+            const isClickable = plan.id === 'aia';
             
             return (
               <div
@@ -145,7 +167,6 @@ const SelectPlanPage = () => {
                     </div>
                   </div>
                   
-                  {/* Checkmark for selected */}
                   {isSelected && (
                     <div className="w-6 h-6 rounded-full bg-[#E67E22] flex items-center justify-center flex-shrink-0">
                       <Check size={14} className="text-white" />
@@ -161,7 +182,7 @@ const SelectPlanPage = () => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm text-gray-600">帳戶結餘（港幣）</span>
-                    <span className="text-sm font-medium text-gray-900">{plan.balance}</span>
+                    <span className="text-sm font-medium text-gray-900">{formatBalance(plan.balance)}</span>
                   </div>
                 </div>
 
@@ -197,7 +218,6 @@ const SelectPlanPage = () => {
         </button>
       </div>
 
-      {/* Bottom Spacer for fixed button */}
       <div className="h-20" />
     </div>
   );
