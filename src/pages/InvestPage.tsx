@@ -37,41 +37,41 @@ const InvestPage = () => {
         <div className="w-8" />
       </div>
 
-      <div className="px-4 py-4">
+      <div className="px-4 py-5">
         {/* Subtitle */}
         <p className="text-gray-600 text-sm mb-6">
           請根據你的需要選擇投資指示選項。
         </p>
 
         {/* Investment Cards */}
-        <div className="space-y-4">
+        <div className="space-y-5">
           {/* Card 1: 現有帳戶結餘的投資 */}
           <div 
             onClick={() => handleCardClick('existing')}
-            className="border border-gray-200 rounded-2xl p-5 cursor-pointer hover:shadow-md transition-shadow bg-white relative"
+            className="border border-gray-200 rounded-2xl p-6 cursor-pointer hover:shadow-lg transition-shadow bg-white relative"
           >
             {/* Info Button - Top Right */}
             <button 
               onClick={handleInfoClick}
-              className="absolute top-4 right-4 p-1 text-gray-400 hover:text-gray-600"
+              className="absolute top-5 right-5 p-1.5 text-gray-400 hover:text-gray-600"
             >
-              <Info size={20} />
+              <Info size={22} />
             </button>
 
             <div className="flex items-start">
-              {/* Icon */}
-              <div className="flex-shrink-0 mr-4">
+              {/* Icon - 加大 */}
+              <div className="flex-shrink-0 mr-5">
                 <img 
                   src="./icons/invest-existing.jpg" 
                   alt="現有帳戶結餘"
-                  className="w-14 h-14 object-contain"
+                  className="w-16 h-16 object-contain"
                 />
               </div>
 
               {/* Content */}
-              <div className="flex-1 pr-8">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">現有帳戶結餘的投資</h3>
-                <p className="text-sm text-gray-500 leading-relaxed">
+              <div className="flex-1 pr-10">
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">現有帳戶結餘的投資</h3>
+                <p className="text-base text-gray-500 leading-relaxed">
                   更改你現有帳戶結餘的投資組合，你可選擇指定基金轉換或單次投資組合重組
                 </p>
               </div>
@@ -81,30 +81,30 @@ const InvestPage = () => {
           {/* Card 2: 未來供款的投資 */}
           <div 
             onClick={() => handleCardClick('future')}
-            className="border border-gray-200 rounded-2xl p-5 cursor-pointer hover:shadow-md transition-shadow bg-white relative"
+            className="border border-gray-200 rounded-2xl p-6 cursor-pointer hover:shadow-lg transition-shadow bg-white relative"
           >
             {/* Info Button - Top Right */}
             <button 
               onClick={handleInfoClick}
-              className="absolute top-4 right-4 p-1 text-gray-400 hover:text-gray-600"
+              className="absolute top-5 right-5 p-1.5 text-gray-400 hover:text-gray-600"
             >
-              <Info size={20} />
+              <Info size={22} />
             </button>
 
             <div className="flex items-start">
-              {/* Icon */}
-              <div className="flex-shrink-0 mr-4">
+              {/* Icon - 加大 */}
+              <div className="flex-shrink-0 mr-5">
                 <img 
                   src="./icons/invest-future.jpg" 
                   alt="未來供款"
-                  className="w-14 h-14 object-contain"
+                  className="w-16 h-16 object-contain"
                 />
               </div>
 
               {/* Content */}
-              <div className="flex-1 pr-8">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">未來供款的投資</h3>
-                <p className="text-sm text-gray-500 leading-relaxed">
+              <div className="flex-1 pr-10">
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">未來供款的投資</h3>
+                <p className="text-base text-gray-500 leading-relaxed">
                   適用於更改所有未來收到的款項的投資組合，包括供款及自另一計劃轉入之款項。
                 </p>
               </div>
