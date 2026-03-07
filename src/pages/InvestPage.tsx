@@ -198,6 +198,51 @@ const InvestPage = () => {
                   className="w-full rounded-lg"
                 />
               </div>
+
+              {/* 免責聲明 */}
+              <p className="text-xs text-gray-500 mb-8 leading-relaxed">
+                *為簡化說明，上述例子假設所有基金價格在作出基金轉換指示之前及之後均保持不變。在實際情況下，若基金價格在作出指示後有所變動，現有強積金的投資組合結餘亦會隨之改變。
+              </p>
+
+              {/* Section: 重組投資組合 */}
+              <h3 className="text-lg font-bold text-gray-900 mb-3">重組投資組合</h3>
+              <p className="text-sm text-gray-700 mb-4 leading-relaxed">
+                根據新的基金分配指示，改變現有強積金的投資組合。首先是根據指示贖回現有的部分強積金，然後重新投資，以達致要求的基金分配比例。此方法透過改變各基金的比重，重組投資組合。
+              </p>
+
+              {/* 例子 */}
+              <h4 className="text-base font-bold text-gray-900 mb-3">例子</h4>
+              <p className="text-sm text-gray-700 mb-3">
+                舉例說，假設現有強積金的投資組合結餘如下：
+              </p>
+
+              {/* Bullet points - 投資組合結餘 */}
+              <ul className="text-sm text-gray-700 mb-4 pl-1 space-y-1">
+                <li className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>香港股票基金甲$3,000</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>香港債券基金乙$7,000</span>
+                </li>
+              </ul>
+
+              <p className="text-sm text-gray-700 mb-3">
+                計劃成員作出重組投資組合的指示，把現有強積金的投資組合改為：
+              </p>
+
+              {/* Bullet points - 指示 */}
+              <ul className="text-sm text-gray-700 mb-6 pl-1 space-y-1">
+                <li className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>80%股票基金甲</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>20%債券基金乙</span>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
