@@ -158,9 +158,37 @@ const InvestPage = () => {
 
               {/* 例子 */}
               <h4 className="text-base font-bold text-gray-900 mb-3">例子</h4>
-              <p className="text-sm text-gray-700 mb-4">
+              <p className="text-sm text-gray-700 mb-3">
                 舉例說，假設現有的強積金的投資組合結餘如下：
               </p>
+
+              {/* Bullet points - 投資組合結餘 */}
+              <ul className="text-sm text-gray-700 mb-4 pl-1 space-y-1">
+                <li className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>香港股票基金甲$3,000</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>香港債券基金乙$7,000</span>
+                </li>
+              </ul>
+
+              <p className="text-sm text-gray-700 mb-3">
+                計劃成員作出以下基金轉換的指示：
+              </p>
+
+              {/* Bullet points - 指示 */}
+              <ul className="text-sm text-gray-700 mb-6 pl-1 space-y-1">
+                <li className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>轉出所有股票基金甲的投資；以及</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>把贖回股票基金甲所得的相關款項平均轉入強積金保守基金丙及債券基金丁。</span>
+                </li>
+              </ul>
 
               {/* 流程圖 */}
               <div className="mb-6">
