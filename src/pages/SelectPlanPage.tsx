@@ -1,22 +1,32 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Check } from 'lucide-react';
+import { ChevronLeft, X } from 'lucide-react';
 import { useTransfer } from '../context/TransferContext';
+import StepBar from '../components/StepBar';
 
 interface Plan {
   id: string;
   name: string;
-  subtitle: string;
   date: string;
   accountNumber: string;
   accountType: string;
   balance: number;
   icon: string;
+  mandatoryBalance?: number;
+  voluntaryBalance?: number;
+  gain?: number;
 }
 
 const SelectPlanPage = () => {
   const navigate = useNavigate();
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const { transferData, setStep1Data } = useTransfer();
+  const [showModal, setShowModal] = useState(false);
+  const [modalPlan, setModalPlan] = useState<Plan | null>(null);
   
   // 從 Context 讀取已選擇嘅計劃
   const [selectedPlan, setSelectedPlan] = useState<string>(() => {
@@ -30,17 +40,18 @@ const SelectPlanPage = () => {
     {
       id: 'aia',
       name: '友邦強積金優選計劃',
-      subtitle: '自 15/03/2015 | 成員帳戶號碼：38765432',
-      date: '15/03/2015',
+      date: '29/12/2023',
       accountNumber: '56442131',
       accountType: '一般僱員',
-      balance: 122309.07,
+      balance: transferData.step1?.balance || 122309.07,
+      mandatoryBalance: 28225.17,
+      voluntaryBalance: 94083.90,
+      gain: 122309.07,
       icon: './icons/aia-logo-new.jpg',
     },
     {
       id: 'manulife',
       name: '宏利環球精選（強積金）計劃',
-      subtitle: '自 26/01/2011 | 成員帳戶號碼：29819644',
       date: '26/01/2011',
       accountNumber: '29819644',
       accountType: '個人帳戶',
@@ -67,6 +78,17 @@ const SelectPlanPage = () => {
       }
     }
     // 宏利按下無反應（不能選擇）
+  };
+
+  const handleOpenModal = (e: React.MouseEvent, plan: Plan) => {
+    e.stopPropagation();
+    setModalPlan(plan);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setModalPlan(null);
   };
 
   const handleNext = () => {
@@ -96,32 +118,7 @@ const SelectPlanPage = () => {
         </div>
 
         {/* Step Bar */}
-        <div className="px-4 py-4 border-b border-gray-200">
-          <div className="flex items-center justify-center">
-            {/* Step 1 - Active */}
-            <div className="flex items-center">
-              <div className="w-7 h-7 rounded-full bg-[#E67E22] flex items-center justify-center">
-                <span className="text-white text-sm font-medium">1</span>
-              </div>
-            </div>
-            
-            <div className="w-12 h-0.5 bg-gray-300 mx-1" />
-            
-            <div className="flex items-center">
-              <div className="w-7 h-7 rounded-full bg-gray-300 flex items-center justify-center">
-                <span className="text-gray-500 text-sm">2</span>
-              </div>
-            </div>
-            
-            <div className="w-12 h-0.5 bg-gray-300 mx-1" />
-            
-            <div className="flex items-center">
-              <div className="w-7 h-7 rounded-full bg-gray-300 flex items-center justify-center">
-                <span className="text-gray-500 text-sm">3</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <StepBar currentStep={1} />
       </div>
 
       <div className="px-4 py-6">
@@ -148,49 +145,47 @@ const SelectPlanPage = () => {
                 key={plan.id}
                 onClick={() => isClickable && handlePlanClick(plan.id)}
                 className={`
-                  bg-white rounded-lg p-4 border-2 transition-all
+                  bg-white rounded-2xl p-5 border-2 transition-all
                   ${isSelected ? 'border-[#E67E22]' : 'border-gray-200'}
                   ${isClickable ? 'cursor-pointer' : 'cursor-default'}
                 `}
               >
-                {/* Header Row */}
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center">
+                {/* Logo - 置中 */}
+                <div className="flex justify-center mb-4">
+                  <div className="w-16 h-16 flex items-center justify-center">
                     <img 
                       src={plan.icon} 
                       alt={plan.name}
-                      className="w-10 h-10 object-contain mr-3"
+                      className="w-14 h-14 object-contain"
                     />
-                    <div>
-                      <h3 className="text-base font-medium text-gray-900">{plan.name}</h3>
-                      <p className="text-xs text-gray-500">{plan.subtitle}</p>
-                    </div>
-                  </div>
-                  
-                  {isSelected && (
-                    <div className="w-6 h-6 rounded-full bg-[#E67E22] flex items-center justify-center flex-shrink-0">
-                      <Check size={14} className="text-white" />
-                    </div>
-                  )}
-                </div>
-
-                {/* Details */}
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-sm text-gray-600">帳戶類別</span>
-                    <span className="text-sm text-gray-900">{plan.accountType}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm text-gray-600">帳戶結餘（港幣）</span>
-                    <span className="text-sm font-medium text-gray-900">{formatBalance(plan.balance)}</span>
                   </div>
                 </div>
-
-                {/* Account Details Link */}
-                <div className="mt-3">
+                
+                {/* 計劃名稱 - 置中 */}
+                <h3 className="text-xl font-bold text-gray-900 text-center mb-2">{plan.name}</h3>
+                
+                {/* 日期同帳戶號碼 - 置中 */}
+                <p className="text-base text-gray-500 text-center mb-6">
+                  自{plan.date} | 成員帳戶號碼： {plan.accountNumber}
+                </p>
+                
+                {/* 帳戶類別 - 靠左 */}
+                <div className="mb-4">
+                  <p className="text-base text-gray-500 mb-1">帳戶類別</p>
+                  <p className="text-xl text-gray-900">{plan.accountType}</p>
+                </div>
+                
+                {/* 帳戶結餘 - 靠左 */}
+                <div className="mb-4">
+                  <p className="text-base text-gray-500 mb-1">帳戶結餘（港幣）</p>
+                  <p className="text-xl text-gray-900">{formatBalance(plan.balance)}</p>
+                </div>
+                
+                {/* 帳戶詳情 - 靠左 */}
+                <div>
                   <button 
-                    className="text-sm text-blue-600 hover:text-blue-700"
-                    onClick={(e) => e.stopPropagation()}
+                    className="text-base text-gray-900 underline"
+                    onClick={(e) => handleOpenModal(e, plan)}
                   >
                     帳戶詳情
                   </button>
@@ -219,6 +214,90 @@ const SelectPlanPage = () => {
       </div>
 
       <div className="h-20" />
+
+      {/* Account Details Modal */}
+      {showModal && modalPlan && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 bg-black/50" 
+            onClick={handleCloseModal}
+          />
+          
+          {/* Modal Content */}
+          <div className="relative bg-white rounded-2xl w-full max-w-sm p-6">
+            {/* Close Button */}
+            <button
+              onClick={handleCloseModal}
+              className="absolute top-4 right-4 text-gray-500"
+            >
+              <X size={24} />
+            </button>
+            
+            {/* Title */}
+            <h2 className="text-xl font-bold text-[#E67E22] text-center mb-6">帳戶詳情</h2>
+            
+            {/* Logo */}
+            <div className="flex justify-center mb-4">
+              <img 
+                src={modalPlan.icon} 
+                alt={modalPlan.name}
+                className="w-16 h-16 object-contain"
+              />
+            </div>
+            
+            {/* Plan Name */}
+            <h3 className="text-xl font-bold text-gray-900 text-center mb-2">{modalPlan.name}</h3>
+            
+            {/* Date and Account Number */}
+            <p className="text-base text-gray-500 text-center mb-6">
+              自 {modalPlan.date} | 成員帳戶號碼： {modalPlan.accountNumber}
+            </p>
+            
+            {/* Account Details */}
+            <div className="space-y-4">
+              {/* 帳戶類別 */}
+              <div>
+                <p className="text-base text-gray-500 mb-1">帳戶類別</p>
+                <p className="text-lg font-medium text-gray-900">{modalPlan.accountType}</p>
+              </div>
+              
+              {/* 強制性供款結餘 */}
+              <div>
+                <p className="text-base text-gray-500 mb-1">強制性供款結餘（港幣）</p>
+                <p className="text-lg font-medium text-gray-900">
+                  {formatBalance(modalPlan.mandatoryBalance || 28225.17)}
+                </p>
+              </div>
+              
+              {/* 自願性供款結餘 */}
+              <div>
+                <p className="text-base text-gray-500 mb-1">自願性供款結餘（港幣）</p>
+                <p className="text-lg font-medium text-gray-900">
+                  {formatBalance(modalPlan.voluntaryBalance || 94083.90)}
+                </p>
+              </div>
+              
+              {/* 投資收益 */}
+              <div>
+                <p className="text-base text-gray-500 mb-1">投資收益（虧損）（港幣）</p>
+                <p className="text-lg font-medium text-gray-900">
+                  {formatBalance(modalPlan.gain || 122309.07)}
+                </p>
+              </div>
+              
+              {/* 帳戶結餘 */}
+              <div>
+                <p className="text-base text-gray-500 mb-1">帳戶結餘（港幣）</p>
+                <p className="text-lg font-medium text-gray-900">{formatBalance(modalPlan.balance)}</p>
+              </div>
+            </div>
+            
+            {/* Date */}
+            <p className="text-sm text-gray-400 text-right mt-4">截至 05/03/2026</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
