@@ -243,6 +243,15 @@ const InvestPage = () => {
                   <span>20%債券基金乙</span>
                 </li>
               </ul>
+
+              {/* 重組流程圖 */}
+              <div className="mb-6">
+                <img 
+                  src="./images/rebalance-flow.jpg" 
+                  alt="重組投資組合流程圖"
+                  className="w-full rounded-lg"
+                />
+              </div>
             </div>
           </div>
         </div>
