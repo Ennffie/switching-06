@@ -44,8 +44,8 @@ const SelectPlanPage = () => {
       accountNumber: '56442131',
       accountType: '一般僱員',
       balance: 128396.91,
-      mandatoryBalance: 28225.17,
-      voluntaryBalance: 94083.90,
+      mandatoryBalance: 68389.17,
+      voluntaryBalance: 60007.74,
       gain: 58508.93,
       icon: './icons/aia-logo-new.jpg',
     },
@@ -277,7 +277,7 @@ const SelectPlanPage = () => {
               <div>
                 <p className="text-base text-gray-500 mb-1">強制性供款結餘（港幣）</p>
                 <p className="text-lg font-medium text-gray-900">
-                  {formatBalance(modalPlan.mandatoryBalance || 28225.17)}
+                  {formatBalance(modalPlan.mandatoryBalance || 68389.17)}
                 </p>
               </div>
               
@@ -285,7 +285,7 @@ const SelectPlanPage = () => {
               <div>
                 <p className="text-base text-gray-500 mb-1">自願性供款結餘（港幣）</p>
                 <p className="text-lg font-medium text-gray-900">
-                  {formatBalance(modalPlan.voluntaryBalance || 94083.90)}
+                  {formatBalance(modalPlan.voluntaryBalance || 60007.74)}
                 </p>
               </div>
               
