@@ -40,7 +40,7 @@ const defaultData: TransferData = {
     trustee: '友邦(信託)有限',
     accountNumber: '56442131',
     accountType: '一般僱員',
-    balance: 122309.07,
+    balance: 128396.91,
     employerName: 'Taxable VC (Not Applicable)',
     icon: './icons/aia-logo-new.jpg',
   },

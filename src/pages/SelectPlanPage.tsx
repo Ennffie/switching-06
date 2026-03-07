@@ -43,10 +43,10 @@ const SelectPlanPage = () => {
       date: '29/12/2023',
       accountNumber: '56442131',
       accountType: '一般僱員',
-      balance: transferData.step1?.balance || 122309.07,
+      balance: 128396.91,
       mandatoryBalance: 28225.17,
       voluntaryBalance: 94083.90,
-      gain: 122309.07,
+      gain: 58508.93,
       icon: './icons/aia-logo-new.jpg',
     },
     {
@@ -55,7 +55,8 @@ const SelectPlanPage = () => {
       date: '26/01/2011',
       accountNumber: '29819644',
       accountType: '個人帳戶',
-      balance: 135050.05,
+      balance: 44905.94,
+      gain: 33109.71,
       icon: './icons/manulife-logo-new.jpg',
     },
   ];
