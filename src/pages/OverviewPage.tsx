@@ -1,12 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Bell, LayoutGrid } from 'lucide-react';
 
 const OverviewPage = () => {
   const navigate = useNavigate();
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const [activeTab, setActiveTab] = useState('overview');
   const [activeFilter, setActiveFilter] = useState('personal');
-  const [showNameStars, setShowNameStars] = useState(true);
+  const [showNameStars, setShowNameStars] = useState(false);
 
   const totalBalance = 285634.43;
   const totalGain = 168225.16;
@@ -48,6 +53,8 @@ const OverviewPage = () => {
   const handleTabClick = (tabId: string) => {
     setActiveTab(tabId);
     if (tabId === 'my-mpf') {
+      navigate('/my-mpf');
+    } else if (tabId === 'overview') {
       navigate('/');
     }
   };
@@ -112,7 +119,6 @@ const OverviewPage = () => {
         <div className="relative" style={{ width: '260px', height: '260px' }}>
           <svg viewBox="0 0 100 100" className="w-full h-full transform -rotate-90">
             {activeFilter === 'all' ? (
-              // 全部 tab - 全藍色
               <circle
                 cx="50"
                 cy="50"
@@ -122,9 +128,7 @@ const OverviewPage = () => {
                 strokeWidth="14"
               />
             ) : (
-              // 個人帳戶 tab - 多色分段
               <>
-                {/* 藍灰色 - 最大段 */}
                 <circle
                   cx="50"
                   cy="50"
@@ -135,7 +139,6 @@ const OverviewPage = () => {
                   strokeDasharray={`${50 * 2.51} ${100 * 2.51}`}
                   strokeLinecap="butt"
                 />
-                {/* 綠色 */}
                 <circle
                   cx="50"
                   cy="50"
@@ -147,7 +150,6 @@ const OverviewPage = () => {
                   strokeDashoffset={-50 * 2.51}
                   strokeLinecap="butt"
                 />
-                {/* 青色 */}
                 <circle
                   cx="50"
                   cy="50"
@@ -159,7 +161,6 @@ const OverviewPage = () => {
                   strokeDashoffset={-(50 + 22) * 2.51}
                   strokeLinecap="butt"
                 />
-                {/* 橙色 */}
                 <circle
                   cx="50"
                   cy="50"
@@ -189,7 +190,7 @@ const OverviewPage = () => {
           </div>
         </div>
         
-        <p className="text-base text-gray-700 mt-4">截至 04/03/2026</p>
+        <p className="text-base text-gray-700 mt-4">截至 05/03/2026</p>
       </div>
 
       {/* 投資收益 */}
@@ -230,33 +231,29 @@ const OverviewPage = () => {
         </div>
       </div>
 
-      {/* 計劃列表 - 卡片式 */}
+      {/* 計劃列表 */}
       <div className="bg-gray-50 px-4 py-3 space-y-3">
         {plans.map((plan) => (
           <div key={plan.id} className="flex items-center bg-white rounded-lg overflow-hidden shadow-sm">
-            {/* 左邊彩色條 */}
             <div className={`w-1.5 self-stretch ${plan.barColor}`}></div>
             
-            {/* Logo */}
             <div className="w-14 h-14 flex items-center justify-center flex-shrink-0 ml-2">
-              <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden border border-gray-100">
+              <div className={`rounded-full bg-white flex items-center justify-center overflow-hidden border border-gray-100 ${plan.name.includes('滙豐') || plan.name.includes('HSBC') ? 'w-11 h-11' : 'w-10 h-10'}`}>
                 <img 
                   src={plan.icon} 
                   alt={plan.name}
-                  className="w-6 h-6 object-contain"
+                  className={`object-contain ${plan.name.includes('滙豐') || plan.name.includes('HSBC') ? 'w-10 h-10' : 'w-9 h-9'}`}
                   onError={(e) => {
                     (e.target as HTMLImageElement).style.display = 'none';
-                    (e.target as HTMLImageElement).parentElement!.innerHTML = '<div class="w-6 h-6 ' + plan.iconColor + ' rounded-full flex items-center justify-center text-white text-xs font-bold">' + plan.name[0] + '</div>';
+                    (e.target as HTMLImageElement).parentElement!.innerHTML = '<div class="w-9 h-9 ' + plan.iconColor + ' rounded-full flex items-center justify-center text-white text-xs font-bold">' + plan.name[0] + '</div>';
                   }}
                 />
               </div>
             </div>
             
-            {/* 中間資料 */}
             <div className="flex-1 py-3 pr-2">
               <p className="text-base text-gray-900 mb-1">{plan.name}</p>
               <div className="flex items-center text-emerald-500">
-                {/* 綠色三角形 */}
                 <svg className="w-3 h-3 mr-1.5" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 4l-8 8h16z"/>
                 </svg>
@@ -264,7 +261,6 @@ const OverviewPage = () => {
               </div>
             </div>
             
-            {/* 右邊餘額 */}
             <div className="pr-4">
               <p className="text-base font-medium text-gray-900">
                 {formatCurrency(plan.balance)}
@@ -297,6 +293,40 @@ const OverviewPage = () => {
           <h3 className="text-xl font-bold text-[#E67E22]">最新消息</h3>
           <button className="text-base text-gray-600">查看全部</button>
         </div>
+        
+        <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
+          <div className="flex-shrink-0 w-64 bg-white rounded-lg p-4 shadow-sm border border-gray-100">
+            <h4 className="text-base font-bold text-gray-900 mb-2 line-clamp-2">我們重視你的意見</h4>
+            <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">
+              為讓我們不斷提升客戶服務，現誠邀你參與一份簡短的「客戶滿意度調查」。
+            </p>
+            <p className="text-xs text-gray-400 mt-3">24/01/2026</p>
+          </div>
+          
+          <div className="flex-shrink-0 w-64 bg-white rounded-lg p-4 shadow-sm border border-gray-100">
+            <h4 className="text-base font-bold text-gray-900 mb-2 line-clamp-2">強積金受託人及計劃加入積金易平台的最新時間表</h4>
+            <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">
+              強積金受託人及計劃加入積金易平台的最新時間表
+            </p>
+            <p className="text-xs text-gray-400 mt-3">23/01/2026</p>
+          </div>
+          
+          <div className="flex-shrink-0 w-64 bg-white rounded-lg p-4 shadow-sm border border-gray-100">
+            <h4 className="text-base font-bold text-gray-900 mb-2 line-clamp-2">積金易平台有限公司與金融糾紛調解中心合辦「積金易」...</h4>
+            <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">
+              積金易平台有限公司（積金易公司）與金融糾紛調解中心（FDRC）今天簽署諒解備忘錄...
+            </p>
+            <p className="text-xs text-gray-400 mt-3">25/06/2025</p>
+          </div>
+          
+          <div className="flex-shrink-0 w-64 bg-white rounded-lg p-4 shadow-sm border border-gray-100">
+            <h4 className="text-base font-bold text-gray-900 mb-2 line-clamp-2">發出周年權益報表</h4>
+            <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">
+              萬全強制性公積金計劃、中國人壽強積金集成信託計劃和交通銀行慳盈退休強積金計劃...
+            </p>
+            <p className="text-xs text-gray-400 mt-3">25/03/2025</p>
+          </div>
+        </div>
       </div>
 
       {/* 浮動按鈕 */}
@@ -304,61 +334,102 @@ const OverviewPage = () => {
         <LayoutGrid size={22} className="text-white" />
       </button>
 
-      {/* Bottom Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
-        <div className="flex items-center justify-around py-2">
-          <button
-            onClick={() => handleTabClick('overview')}
-            className={`flex flex-col items-center py-1 px-3 ${
-              activeTab === 'overview' ? 'text-[#E67E22]' : 'text-gray-400'
-            }`}
+      {/* Bottom Navigation - 統一樣式 */}
+      <div 
+        className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex items-end justify-around"
+        style={{ height: '64px', paddingBottom: '8px' }}
+      >
+        <button
+          onClick={() => handleTabClick('overview')}
+          className="flex flex-col items-center justify-end"
+          style={{ width: '64px', height: '48px' }}
+        >
+          <div style={{ width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <img 
+              src={activeTab === 'overview' ? "./icons/nav_overview_active.png" : "./icons/nav_overview.png"} 
+              alt="帳戶概覽"
+              style={{ width: '24px', height: '24px' }}
+            />
+          </div>
+          <span 
+            className="text-xs mt-1"
+            style={{ color: activeTab === 'overview' ? '#E67E22' : '#9CA3AF', lineHeight: '16px' }}
           >
-            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={activeTab === 'overview' ? 2.5 : 2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
-            </svg>
-            <span className="text-xs mt-1">帳戶概覽</span>
-          </button>
-          
-          <button
-            onClick={() => handleTabClick('my-mpf')}
-            className={`flex flex-col items-center py-1 px-3 ${
-              activeTab === 'my-mpf' ? 'text-[#E67E22]' : 'text-gray-400'
-            }`}
+            帳戶概覽
+          </span>
+        </button>
+        
+        <button
+          onClick={() => handleTabClick('my-mpf')}
+          className="flex flex-col items-center justify-end"
+          style={{ width: '64px', height: '48px' }}
+        >
+          <div style={{ width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <img 
+              src={activeTab === 'my-mpf' ? "./icons/nav_mpf_active.png" : "./icons/nav_mpf.png"} 
+              alt="我的強積金"
+              style={{ width: '24px', height: '24px' }}
+            />
+          </div>
+          <span 
+            className="text-xs mt-1"
+            style={{ color: activeTab === 'my-mpf' ? '#E67E22' : '#9CA3AF', lineHeight: '16px' }}
           >
-            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={activeTab === 'my-mpf' ? 2.5 : 2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            <span className="text-xs mt-1">我的強積金</span>
-          </button>
-          
-          <button
-            onClick={() => handleTabClick('todo')}
-            className={`flex flex-col items-center py-1 px-3 ${
-              activeTab === 'todo' ? 'text-[#E67E22]' : 'text-gray-400'
-            }`}
+            我的強積金
+          </span>
+        </button>
+        
+        <button
+          onClick={() => handleTabClick('todo')}
+          className="flex flex-col items-center justify-end"
+          style={{ width: '64px', height: '48px' }}
+        >
+          <div style={{ width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+            <img 
+              src={activeTab === 'todo' ? "./icons/nav_todo_active.png" : "./icons/nav_todo.png"} 
+              alt="待辦事項"
+              style={{ width: '24px', height: '24px' }}
+            />
+            <span 
+              className="absolute flex items-center justify-center rounded-full bg-red-500 text-white font-medium"
+              style={{ 
+                minWidth: '14px', 
+                height: '14px', 
+                fontSize: '9px',
+                top: '-4px',
+                right: '-6px'
+              }}
+            >
+              1
+            </span>
+          </div>
+          <span 
+            className="text-xs mt-1"
+            style={{ color: activeTab === 'todo' ? '#E67E22' : '#9CA3AF', lineHeight: '16px' }}
           >
-            <div className="relative">
-              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={activeTab === 'todo' ? 2.5 : 2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-              </svg>
-              <span className="absolute -top-1 -right-1.5 min-w-[14px] h-3.5 bg-red-500 text-white text-[9px] font-medium rounded-full flex items-center justify-center px-1">1</span>
-            </div>
-            <span className="text-xs mt-1">待辦事項</span>
-          </button>
-          
-          <button
-            onClick={() => handleTabClick('profile')}
-            className={`flex flex-col items-center py-1 px-3 ${
-              activeTab === 'profile' ? 'text-[#E67E22]' : 'text-gray-400'
-            }`}
+            待辦事項
+          </span>
+        </button>
+        
+        <button
+          onClick={() => handleTabClick('profile')}
+          className="flex flex-col items-center justify-end"
+          style={{ width: '64px', height: '48px' }}
+        >
+          <div style={{ width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <img 
+              src={activeTab === 'profile' ? "./icons/nav_account_active.png" : "./icons/nav_account.png"} 
+              alt="我的帳戶"
+              style={{ width: '24px', height: '24px' }}
+            />
+          </div>
+          <span 
+            className="text-xs mt-1"
+            style={{ color: activeTab === 'profile' ? '#E67E22' : '#9CA3AF', lineHeight: '16px' }}
           >
-            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={activeTab === 'profile' ? 2.5 : 2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
-            <span className="text-xs mt-1">我的帳戶</span>
-          </button>
-        </div>
+            我的帳戶
+          </span>
+        </button>
       </div>
     </div>
   );
