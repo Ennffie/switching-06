@@ -59,6 +59,16 @@ const SelectPlanPage = () => {
       gain: 33109.71,
       icon: './icons/manulife-logo-new.jpg',
     },
+    {
+      id: 'hsbc',
+      name: '滙豐強積金智選計劃',
+      date: '15/03/2019',
+      accountNumber: '88273645',
+      accountType: '個人帳戶',
+      balance: 82622.89,
+      gain: 60043.27,
+      icon: './icons/hsbc-logo.jpg',
+    },
   ];
 
   const handlePlanClick = (planId: string) => {
