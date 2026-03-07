@@ -252,6 +252,11 @@ const InvestPage = () => {
                   className="w-full rounded-lg"
                 />
               </div>
+
+              {/* 免責聲明 - 重組投資組合 */}
+              <p className="text-xs text-gray-500 leading-relaxed">
+                *為簡化說明，上述例子假設所有基金價格在作出重組投資指示之前及之後均保持不變。在實際情況下，若基金價格在作出指示後有所變動，現有強積金的投資組合結餘亦會隨之改變。
+              </p>
             </div>
           </div>
         </div>
