@@ -41,7 +41,7 @@ const defaultData: TransferData = {
     accountNumber: '56442131',
     accountType: '一般僱員',
     balance: 128396.91,
-    employerName: 'Taxable VC (Not Applicable)',
+    employerName: '實力有限公司',
     icon: './icons/aia-logo-new.jpg',
   },
   transferOut: [],

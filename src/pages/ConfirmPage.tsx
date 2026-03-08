@@ -1,10 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronUp, ChevronDown, Pencil } from 'lucide-react';
 import { useTransfer } from '../context/TransferContext';
+import StepBar from '../components/StepBar';
 
 const ConfirmPage = () => {
   const navigate = useNavigate();
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const { transferData } = useTransfer();
   const [expandedSections, setExpandedSections] = useState({
     step1: true,
@@ -29,23 +35,19 @@ const ConfirmPage = () => {
     trustee: '友邦(信託)有限',
     accountNumber: '56442131',
     accountType: '一般僱員',
-    balance: 122309.07,
-    employerName: 'Taxable VC (Not Applicable)',
+    balance: 128396.91,
+    employerName: '實力有限公司',
     icon: './icons/aia-logo-new.jpg',
   };
 
   const transferOutData = transferData.transferOut.length > 0 ? transferData.transferOut : [
-    { title: '僱主強制性供款（港幣）', funds: [{ name: '保證組合', percentage: 10 }, { name: '環球債券基金', percentage: 10 }, { name: '全球基金', percentage: 10 }] },
-    { title: '僱主自願性供款（港幣）', funds: [{ name: '保證組合', percentage: 20 }] },
-    { title: '僱員強制性供款', funds: [{ name: '環球債券基金', percentage: 20 }] },
-    { title: '僱員自願性供款', funds: [{ name: '全球基金', percentage: 20 }] },
+    { title: '僱員強制性供款（港幣）', funds: [{ name: '美洲基金', percentage: 25 }, { name: '北美股票基金', percentage: 25 }] },
+    { title: '僱員自願性供款（港幣）', funds: [{ name: '增長組合', percentage: 25 }, { name: '均衡組合', percentage: 25 }] },
   ];
 
   const transferInData = transferData.transferIn.length > 0 ? transferData.transferIn : [
-    { title: '僱主強制性供款（港幣）', funds: [{ name: '亞洲債券基金', percentage: 50 }, { name: '中港基金', percentage: 50 }] },
-    { title: '僱主自願性供款（港幣）', funds: [{ name: '亞歐基金', percentage: 50 }, { name: '北美股票基金', percentage: 50 }] },
-    { title: '僱員強制性供款', funds: [{ name: '亞洲股票基金', percentage: 50 }, { name: '友邦強積金優選計劃-退休收益基金', percentage: 50 }] },
-    { title: '僱員自願性供款', funds: [{ name: '65歲後基金', percentage: 50 }, { name: '亞洲股票基金', percentage: 50 }] },
+    { title: '僱員強制性供款（港幣）', funds: [{ name: '預設投資策略', percentage: 50 }, { name: '亞洲股票基金', percentage: 50 }] },
+    { title: '僱員自願性供款（港幣）', funds: [{ name: '環球債券基金', percentage: 50 }, { name: '65歲後基金', percentage: 50 }] },
   ];
 
   return (
@@ -66,39 +68,8 @@ const ConfirmPage = () => {
           <div className="w-10" />
         </div>
 
-        {/* Step Indicator */}
-        <div className="px-6 py-4 border-b border-gray-200">
-          <div className="flex items-center justify-center">
-            {/* Step 1 - Completed */}
-            <div className="flex items-center">
-              <div className="w-7 h-7 rounded-full bg-[#E67E22] flex items-center justify-center">
-                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-            </div>
-            
-            <div className="w-12 h-0.5 bg-[#E67E22] mx-1" />
-            
-            {/* Step 2 - Completed */}
-            <div className="flex items-center">
-              <div className="w-7 h-7 rounded-full bg-[#E67E22] flex items-center justify-center">
-                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-            </div>
-            
-            <div className="w-12 h-0.5 bg-[#E67E22] mx-1" />
-            
-            {/* Step 3 - Active */}
-            <div className="flex items-center">
-              <div className="w-7 h-7 rounded-full bg-[#E67E22] flex items-center justify-center text-white text-sm font-medium">
-                3
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Step Bar */}
+        <StepBar currentStep={3} />
       </div>
 
       {/* Title */}
@@ -114,7 +85,7 @@ const ConfirmPage = () => {
             onClick={() => toggleSection('step1')}
             className="w-full px-4 py-4 flex items-center justify-between border-b border-gray-100"
           >
-            <h3 className="text-base font-medium text-gray-900">第1步：選擇計劃及帳戶</h3>
+            <h3 className="text-base font-medium text-gray-900">選擇計劃及帳戶</h3>
             {expandedSections.step1 ? <ChevronUp size={20} className="text-gray-400" /> : <ChevronDown size={20} className="text-gray-400" />}
           </button>
           
@@ -159,7 +130,7 @@ const ConfirmPage = () => {
         {/* Step 2: 基金轉換指示 */}
         <div className="bg-white">
           <div className="px-4 py-4 border-b border-gray-100">
-            <h3 className="text-base font-medium text-gray-900">第2步：基金轉換指示</h3>
+            <h3 className="text-base font-medium text-gray-900">基金轉換指示</h3>
           </div>
 
           {/* 轉出 */}
@@ -235,9 +206,7 @@ const ConfirmPage = () => {
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-4 z-40">
         <button 
           onClick={() => {
-            // 提交邏輯
-            alert('提交成功！');
-            navigate('/invest/success');
+            navigate('/invest/terms');
           }}
           className="w-full py-4 bg-[#1e3a5f] text-white rounded-full text-lg font-medium active:scale-[0.98] transition-transform"
         >

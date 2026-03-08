@@ -1,6 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FileText, User, Bell, Home } from 'lucide-react';
 import { useTransfer } from '../context/TransferContext';
 
 interface MenuItem {
@@ -14,6 +13,10 @@ const MyMPFPage = () => {
   const [activeTab, setActiveTab] = useState('my-mpf');
   const navigate = useNavigate();
   const { resetTransferData } = useTransfer();
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const menuItems: MenuItem[] = [
     {
@@ -54,15 +57,7 @@ const MyMPFPage = () => {
     },
   ];
 
-  const bottomTabs = [
-    { id: 'overview', icon: <Home size={24} />, label: '帳戶概覽' },
-    { id: 'my-mpf', icon: <FileText size={24} />, label: '我的強積金' },
-    { id: 'todo', icon: <Bell size={24} />, label: '待辦事項' },
-    { id: 'profile', icon: <User size={24} />, label: '個人檔案' },
-  ];
-
   const handleInvestClick = () => {
-    // 重置所有轉換數據
     resetTransferData();
     navigate('/invest');
   };
@@ -70,16 +65,16 @@ const MyMPFPage = () => {
   const handleTabClick = (tabId: string) => {
     setActiveTab(tabId);
     if (tabId === 'overview') {
-      navigate('/overview');
+      navigate('/');
+    } else if (tabId === 'my-mpf') {
+      navigate('/my-mpf');
     }
   };
 
   return (
     <div className="mpf-page">
-      {/* Page Title */}
       <h1 className="page-title-orange">我的強積金</h1>
 
-      {/* Menu Cards */}
       <div className="menu-cards-container">
         {menuItems.map((item) => (
           <div 
@@ -107,18 +102,102 @@ const MyMPFPage = () => {
         ))}
       </div>
 
-      {/* Bottom Navigation */}
-      <div className="bottom-nav-bar">
-        {bottomTabs.map((tab) => (
-          <button
-            key={tab.id}
-            className={`bottom-tab ${activeTab === tab.id ? 'active' : ''}`}
-            onClick={() => handleTabClick(tab.id)}
+      {/* Bottom Navigation - 統一樣式 */}
+      <div 
+        className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex items-end justify-around"
+        style={{ height: '64px', paddingBottom: '8px' }}
+      >
+        <button
+          onClick={() => handleTabClick('overview')}
+          className="flex flex-col items-center justify-end"
+          style={{ width: '64px', height: '48px' }}
+        >
+          <div style={{ width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <img 
+              src={activeTab === 'overview' ? "./icons/nav_overview_active.png" : "./icons/nav_overview.png"} 
+              alt="帳戶概覽"
+              style={{ width: '24px', height: '24px' }}
+            />
+          </div>
+          <span 
+            className="text-xs mt-1"
+            style={{ color: activeTab === 'overview' ? '#E67E22' : '#9CA3AF', lineHeight: '16px' }}
           >
-            <span className="tab-icon">{tab.icon}</span>
-            <span className="tab-label">{tab.label}</span>
-          </button>
-        ))}
+            帳戶概覽
+          </span>
+        </button>
+        
+        <button
+          onClick={() => handleTabClick('my-mpf')}
+          className="flex flex-col items-center justify-end"
+          style={{ width: '64px', height: '48px' }}
+        >
+          <div style={{ width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <img 
+              src={activeTab === 'my-mpf' ? "./icons/nav_mpf_active.png" : "./icons/nav_mpf.png"} 
+              alt="我的強積金"
+              style={{ width: '24px', height: '24px' }}
+            />
+          </div>
+          <span 
+            className="text-xs mt-1"
+            style={{ color: activeTab === 'my-mpf' ? '#E67E22' : '#9CA3AF', lineHeight: '16px' }}
+          >
+            我的強積金
+          </span>
+        </button>
+        
+        <button
+          onClick={() => handleTabClick('todo')}
+          className="flex flex-col items-center justify-end"
+          style={{ width: '64px', height: '48px' }}
+        >
+          <div style={{ width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+            <img 
+              src={activeTab === 'todo' ? "./icons/nav_todo_active.png" : "./icons/nav_todo.png"} 
+              alt="待辦事項"
+              style={{ width: '24px', height: '24px' }}
+            />
+            <span 
+              className="absolute flex items-center justify-center rounded-full bg-red-500 text-white font-medium"
+              style={{ 
+                minWidth: '14px', 
+                height: '14px', 
+                fontSize: '9px',
+                top: '-4px',
+                right: '-6px'
+              }}
+            >
+              1
+            </span>
+          </div>
+          <span 
+            className="text-xs mt-1"
+            style={{ color: activeTab === 'todo' ? '#E67E22' : '#9CA3AF', lineHeight: '16px' }}
+          >
+            待辦事項
+          </span>
+        </button>
+        
+        <button
+          onClick={() => handleTabClick('profile')}
+          className="flex flex-col items-center justify-end"
+          style={{ width: '64px', height: '48px' }}
+        >
+          <div style={{ width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <img 
+              src={activeTab === 'profile' ? "./icons/nav_account_active.png" : "./icons/nav_account.png"} 
+              alt="我的帳戶"
+              style={{ width: '24px', height: '24px' }}
+            />
+          </div>
+          <span 
+            className="text-xs mt-1"
+            style={{ color: activeTab === 'profile' ? '#E67E22' : '#9CA3AF', lineHeight: '16px' }}
+          >
+            我的帳戶
+          </span>
+        </button>
       </div>
     </div>
   );

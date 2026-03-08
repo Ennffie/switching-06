@@ -46,9 +46,9 @@ const InvestPage = () => {
         {/* Investment Cards */}
         <div className="space-y-5">
           {/* Card 1: 現有帳戶結餘的投資 */}
-          <div 
+          <div
             onClick={() => handleCardClick('existing')}
-            className="border border-gray-200 rounded-2xl p-6 cursor-pointer hover:shadow-lg transition-shadow bg-white relative"
+            className="border-4 border-gray-200 rounded-2xl p-6 cursor-pointer hover:shadow-lg transition-shadow bg-white relative"
           >
             {/* Info Button - Top Right */}
             <button 
@@ -79,9 +79,9 @@ const InvestPage = () => {
           </div>
 
           {/* Card 2: 未來供款的投資 */}
-          <div 
+          <div
             onClick={() => handleCardClick('future')}
-            className="border border-gray-200 rounded-2xl p-6 cursor-pointer hover:shadow-lg transition-shadow bg-white relative"
+            className="border-4 border-gray-200 rounded-2xl p-6 cursor-pointer hover:shadow-lg transition-shadow bg-white relative"
           >
             {/* Info Button - Top Right */}
             <button 

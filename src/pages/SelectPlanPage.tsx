@@ -83,7 +83,7 @@ const SelectPlanPage = () => {
           accountNumber: selectedPlanData.accountNumber,
           accountType: selectedPlanData.accountType,
           balance: selectedPlanData.balance,
-          employerName: 'Taxable VC (Not Applicable)',
+          employerName: '實力有限公司',
           icon: selectedPlanData.icon,
         });
       }
@@ -133,17 +133,18 @@ const SelectPlanPage = () => {
       </div>
 
       <div className="px-4 py-6">
-        {/* Title */}
-        <h2 className="text-xl font-bold text-gray-900 mb-1">選擇計劃及帳戶</h2>
-        <p className="text-gray-600 text-sm mb-4">請從下方選項中選擇</p>
+        {/* Title - 橙色 */}
+        <h2 className="text-[22px] font-bold text-[#E67E22] mb-4">選擇計劃及帳戶</h2>
+        
+        {/* 說明文字 */}
+        <p className="text-[15px] text-gray-700 mb-4 leading-relaxed">
+          請從下方選項中選擇你想要作出基金轉換／重組投資組合的強積金帳戶，並按「下一步」繼續。
+        </p>
 
-        {/* Reminder Banner */}
-        <div className="bg-[#FFF5F0] border border-[#FFE0D0] rounded-lg px-4 py-3 mb-4">
-          <p className="text-sm">
-            <span className="text-[#E67E22] font-medium">提醒你：</span>
-            <span className="text-[#E67E22]">強積金屬長線投資</span>
-          </p>
-        </div>
+        {/* 提醒文字 - 紅色，切勿有底線 */}
+        <p className="text-[15px] text-red-600 mb-6 leading-relaxed">
+          提提你：強積金屬長線投資，<span className="underline">切勿</span>因短期市場波動而經常轉換基金。
+        </p>
 
         {/* Plan Cards */}
         <div className="space-y-4">
