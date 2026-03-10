@@ -33,7 +33,7 @@ const SelectPlanPage = () => {
     // 如果 Context 有資料，返返對應嘅 plan id
     if (transferData.step1?.planName.includes('友邦')) return 'aia';
     if (transferData.step1?.planName.includes('宏利')) return 'manulife';
-    return 'aia'; // 預設
+    return ''; // 預設為冇選擇
   });
 
   const plans: Plan[] = [
@@ -72,9 +72,10 @@ const SelectPlanPage = () => {
   ];
 
   const handlePlanClick = (planId: string) => {
+    setSelectedPlan(planId);
+    
+    // 只有選擇 AIA 才會儲存到 Context，因為只有 AIA 可以落下一頁
     if (planId === 'aia') {
-      setSelectedPlan(planId);
-      // 儲存到 Context
       const selectedPlanData = plans.find(p => p.id === planId);
       if (selectedPlanData) {
         setStep1Data({
@@ -83,12 +84,11 @@ const SelectPlanPage = () => {
           accountNumber: selectedPlanData.accountNumber,
           accountType: selectedPlanData.accountType,
           balance: selectedPlanData.balance,
-          employerName: '實力有限公司',
+          employerName: '實運有限公司',
           icon: selectedPlanData.icon,
         });
       }
     }
-    // 宏利按下無反應（不能選擇）
   };
 
   const handleOpenModal = (e: React.MouseEvent, plan: Plan) => {
@@ -150,16 +150,15 @@ const SelectPlanPage = () => {
         <div className="space-y-4">
           {plans.map((plan) => {
             const isSelected = selectedPlan === plan.id;
-            const isClickable = plan.id === 'aia';
+            const isClickable = true; // 所有都可以選擇
             
             return (
               <div
                 key={plan.id}
                 onClick={() => isClickable && handlePlanClick(plan.id)}
                 className={`
-                  bg-white rounded-2xl p-5 border-2 transition-all
+                  bg-white rounded-2xl p-5 border-2 transition-all cursor-pointer
                   ${isSelected ? 'border-[#E67E22]' : 'border-gray-200'}
-                  ${isClickable ? 'cursor-pointer' : 'cursor-default'}
                 `}
               >
                 {/* Logo - 置中 */}
@@ -212,10 +211,10 @@ const SelectPlanPage = () => {
       <div className="fixed bottom-0 left-0 right-0 bg-white p-4 border-t border-gray-200">
         <button
           onClick={handleNext}
-          disabled={!selectedPlan}
+          disabled={selectedPlan !== 'aia'}
           className={`
             w-full py-3 rounded-lg text-base font-medium transition-all
-            ${selectedPlan 
+            ${selectedPlan === 'aia'
               ? 'bg-[#1e3a5f] text-white' 
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
             }
